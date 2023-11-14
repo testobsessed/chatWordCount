@@ -42,15 +42,7 @@ me a great deal about prompt engineering.
 
 ## First Steps: Will It Play a Game?
 
-Could ChatGPT follow even simple instructions to play a game? I tried a simple game with the following prompt:
-
-```
-Let's play a game. 
-You choose a whole number between 1 and 100. 
-I will try to guess it. 
-You will tell me if I am too high, too low, or if I guessed correctly. 
-Ready to play?
-```
+Could ChatGPT follow even simple instructions to play a game? I tried a simple number guessing game.
 
 ![Guess the Number](./screenshots/chatgpt-experiment1-guess-the-number.png)
 
@@ -59,19 +51,21 @@ Success! ChatGPT can play a game with simple instructions.
 (Note that I tried this with Anthropic's Claude,
 but Claude declined to play.)
 
-## Defining WordCount Computer Success Criteria
+## Success Criteria for the WordCount Computer
 
 What would be "good enough" to move forward with ChatGPT as the WordCount computer?
-Ultimately I decided that ChatGPT had to:
+The computer has to be able to:
 * Generate different types of responses based on context (e.g. word count results, information, error messages)
 * Faithfully execute the instructions as written with no creative interpretation or missing steps
 * Produce the same output every time for a given input if the instructions had not changed
 * Show the current instruction set if asked
 * Allow the instructions to be updated
 
-It is worth noting that I iterated on the computer role instructions in the original 
-simulation several times. 
-Participants acting as computers tended to interpret the code to mean what they 
+It is worth noting that I did not manage to draft a successful set of
+computer role instructions in the original 
+simulation the first time.
+It took several tries.
+The people in the computer role tended to interpret the code to mean what they 
 thought the programmers intended rather than
 what the programmers actually wrote.
 There is probably a lesson here about how writing good instructions
@@ -91,11 +85,11 @@ It has two issues that the participants must find and address:
 1. The words are case sensitive, but should be treated as case-insensitive
 2. Punctuation is treated the same as letters
 
-Given an input: 
+That is, given an input: 
 
 `A boy goes for a walk.`
 
-The computer should output:
+According to the initial set of instructions, the computer should output:
 
 ```
 A - 1
@@ -116,15 +110,15 @@ for - 1
 walk - 1
 ```
 
-I needed ChatGPT to be able to respond similarly.
+My goal was to write a prompt for ChatGPT that would result in the same behavior.
 
 ## Original Experiment Transcripts
 
 I originally tried this experiment in July 2023.
-You can find the first set of transcripts 
+You can find the transcripts from those experiments
 in the [transcripts folder](./transcripts) in this repository.
 
-The starting point for those experiments was a single prompt that I synthesized from the original artifacts.
+The starting point was a single prompt that I synthesized from the original artifacts.
 
 ```
 I would like to play a game. Here are the instructions:
@@ -160,9 +154,10 @@ Along the way I learned several valuable lessons including:
 * **ChatGPT's advice was hit-or-miss**. When I asked ChatGPT for advice on writing a better prompt, its corrections sometimes worked and sometimes didn't.
 * No matter how carefully I crafted the prompt, **ChatGPT was still inconsistent** in its behavior.
 
-Here I pick up where I left off.
+In these experiments, I pick up where I left off.
+(I included links to the relevant ChatGPT sessions for each experiment in addition to screenshots.)
 
-## Experiment 1: Use the Last Prompt from July
+## Experiment 1: Try the Last Prompt
 
 At the end of my experiments in July, I had a prompt that came tantalizingly close to
 working but as I recalled still wasn't quite there.
@@ -203,7 +198,7 @@ A "Valid Word" cannot contain any Invalid Characters, but it can include punctua
 
 ```
 
-Let's see what happens when I give it this input: `A boy goes for a walk.`
+Let's [see what happens when I give it this input: `A boy goes for a walk.`](https://chat.openai.com/share/de54fce5-66fe-404e-b55a-72c73001cfee)
 
 ![A boy goes for a walk.](./screenshots/try-01.png)
 
@@ -247,7 +242,7 @@ Lower case and upper case letters are distinct characters. So “Apple” is a d
 
 ```
 
-Let's try the two inputs from before:
+Let's [try the two inputs from before](https://chat.openai.com/share/5d6ebad5-c6d5-4b5a-98ea-99245392a9f3):
 ![A boy goes for a walk.](./screenshots/try-03.png)
 ![Stay Boy Stay](./screenshots/try-04.png)
 
@@ -266,7 +261,7 @@ Nope.
 
 ## Experiment 3: Iterating on Structure
 
-Let's try a smaller prompt that just has the branching logic.
+Let's [try a smaller prompt that just has the branching logic](https://chat.openai.com/share/238c0324-bb1d-4598-9e31-d17725629879).
 
 ```
 I would like to play a game. Here are the instructions:
@@ -306,7 +301,7 @@ BASIC (not Visual Basic, BASIC) was my first programming language. One of the fi
 lessons anyone learned in BASIC was to give yourself room to insert more statements without
 renumbering everything.
 
-Can I use BASIC numbering? Here's an attempt.
+Can I use BASIC numbering? [Here's an attempt](https://chat.openai.com/share/ea9d5632-faf6-4f8a-9c8e-7aa56517a9c8).
 
 ```
 I would like to play a game. Here are the instructions:
@@ -331,9 +326,9 @@ fewer than 20 or so statements total.
 
 ## Experiment 5: Putting It Together
 
-In Experiment 2, I got the counting logic to work. In experiment 3, I got the 
-branching logic to work. Let's put it all together into a final prompt and see how it
-behaves.
+In experiment 2, I got the counting logic to work. In experiment 3, I got the 
+branching logic to work. [Let's put it all together into a final prompt and see how it
+behaves](https://chat.openai.com/share/4c344db9-2f83-43b6-8524-9260ccc936e5).
 
 ```
 I would like to play a game. Here are the instructions:
@@ -365,7 +360,12 @@ Let's put it through its paces:
 ![Stay.](./screenshots/try-12.png)
 ![List.](./screenshots/try-13.png)
 
-Oh dear. It forgot how to list.
+Oh dear. It forgot how to LIST.
+
+(Actually, it is possible that if I had tried to LIST in previous sessions after I had 
+submitted other inputs, ChatGPT would have behaved exactly the same was as in this session.
+One of the interesting challenges with LLMs is understanding when it is and is not changing
+its behavior based on previous inputs.)
 
 ## Conclusion
 
@@ -374,12 +374,13 @@ to use ChatGPT as the WordCount computer, but it would be a great deal of work
 to craft the initial prompt, wrap the ChatGPT API with a web app that
 can manage both prompt updates and the ChatGPT session state, and test the resulting
 solution comprehensively enough to be sure the simulation wouldn't be completely derailed by
-unpredictable and inconsistent behavior.
+unpredictable and inconsistent behavior. It's one thing to nudge a human to act like a more
+reliable computer in the middle of a simulation; it's quite another to have to work around 
+technical issues with an app.
 
-This has been an interesting exercise, but revamping the WordCount simulation for
+Although this has been an interesting exercise, revamping the WordCount simulation for
 the virtual world isn't important enough to me to invest the level of effort required. 
+Perhaps I'll try again in a few months.
 
 In the meantime I hope you have found this interesting, and perhaps even tried some of
 the prompts yourself to see how ChatGPT behaves.
-
-Perhaps I'll try again in a few months.
